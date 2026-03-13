@@ -1,0 +1,59 @@
+create database Library_Mngt_sys
+
+create table Books (
+
+    BookID int identity (1,1) primary key,
+    Title varchar(150) not null,
+    Author varchar(250) not null,
+    Category varchar(50),
+    AvailableBook int check (AvailableBook >= 0)
+
+);
+
+create table Members (
+    MemberID int identity(1,1) primary KEY,
+    Name varchar(250) not null,
+    Email varchar(250) unique,
+    SubDate date default GETDATE(),
+    Country varchar(250)
+);
+
+create table Borrowings (
+    BorrowID int identity (1,1) primary key,
+    BorrowDate date default GETDATE(),
+    ReturnDate date,
+
+    MemberID int,
+    BookID int,
+    
+
+    foreign key (MemberID) REFERENCES Members(MemberID),
+    foreign key (BookID) REFERENCES Books(BookID)
+);
+
+
+insert into Books (Title, Author, Category, AvailableBook)
+values ('intro to programming', 'Moh ali', 'information Technology', 5),
+('Java', 'roman donavan', 'Programming', 3),
+('Business Strategy', 'adam smith', 'Business', 4);
+
+
+
+insert into Members (Name, Email, Country)
+values ('mazin ', 'mazin@email.com', 'egypt'),
+('ali ahmed', 'ali@email.com', 'sudan'),
+('osman ', 'osman@email.com', 'ksa');
+
+
+insert into Borrowings (MemberID, BookID, ReturnDate)
+values(1, 2, NULL),
+(2, 1, '10-04-2026'),
+(3, 3, NULL);
+
+
+
+select Members.Name, Books.Title, Borrowings.BorrowDate
+from Borrowings
+JOIN Members ON Borrowings.MemberID = Members.MemberID
+JOIN Books ON Borrowings.BookID = Books.BookID;
+
