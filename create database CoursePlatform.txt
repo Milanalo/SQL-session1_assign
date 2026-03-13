@@ -1,0 +1,79 @@
+create database CoursePlatform
+
+create table Students (
+
+    StudentID int identity (1,1) primary key,
+    Name varchar(250) not null,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Age int check (Age >= 16),
+    Country varchar(250) default 'egypt'
+
+);
+
+create table Courses (
+    CourseID int identity(1,1) primary key,
+    CourseName varchar(100) not null,
+    Category varchar(250),
+    Price decimal(10,2) check (Price > 0)
+);
+
+create table Enrollments (
+
+    EnrollmentID int identity(1,1) primary key,
+    EnrollDate date default GETDATE(),
+
+    StudentID int,
+    CourseID int,
+    
+
+    foreign key (StudentID) REFERENCES Students(StudentID),
+    foreign key (CourseID) REFERENCES Courses(CourseID)
+);
+
+insert into Students (Name,Email,Age,Country)
+values ('mazin', 'mazin@email.com', 22, 'egypt'),
+('yousif', 'yousif@email.com', 25, 'sudan'),
+('ali', 'ali@email.com', 30, 'ksa'),
+('Mona', 'mona@email.com', 19, 'uae');
+
+insert into Courses (CourseName,Category,Price)
+values ('C#', 'Programming', 50),
+('Business', 'Business analysis', 70),
+('Design', 'Design AI', 60);
+
+insert into Enrollments (StudentID, CourseID)
+values (1,1),
+(2,2),
+(3,3),
+(4,2);
+
+
+
+
+1-Find Students from sudan , ordered by age:
+
+select *
+from Students
+where Country = 'sudan'
+order by Age;
+
+
+2-find students where age between 20-30 (use between)
+
+select *
+from Students
+where Age between 20 and 30;
+
+
+4- after Create Tables Add col CreatedDate in student table (Google it)
+
+alter table Students
+add CreatedDate DATE;
+
+5-rename col Price in Course table to Course_Price(Google it)
+Msg 15336, Level 16, State 1, Procedure sp_rename, Line 773 [Batch Start Line 3]
+Object 'Courses.Price' cannot be renamed because the object participates in enforced dependencies.
+
+6-Select only the first 3 records of the Enrollment table(TOP)
+select top 3 *
+from Enrollments;
